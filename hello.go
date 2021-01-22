@@ -32,6 +32,11 @@ func Hello(name string, lang string) string {
 	return mainPrefix + name
 }
 
+func Mul(x int, y float64) float64 {
+	return float64(x) * y
+}
+
 func main() {
 	fmt.Println(Hello("world", "english"))
+	fmt.Println(Mul(5, 6.2), Mul(2, 3.3))
 }

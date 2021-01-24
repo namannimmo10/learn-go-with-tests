@@ -48,6 +48,26 @@ func Repeat(char string, repeatCount int) string {
 	return repeatedString
 }
 
+func Slices() {
+	s := make([]byte, 5)
+	var nilSlice []int
+
+	fmt.Println(s, len(s), cap(s))
+	fmt.Println(nilSlice, len(nilSlice), cap(nilSlice))
+
+	// Internally slices work this way!
+	d := []byte{'r', 'o', 'a', 'd'}
+	e := d[2:]
+	// e == []byte{'a', 'd'}
+	e[1] = 'm'
+	// e == []byte{'a', 'm'}
+	// d == []byte{'r', 'o', 'a', 'm'}
+
+	for i := range d {
+		fmt.Println(d[i])
+	}
+}
+
 // Prints the sum of even-valued fibonacci terms under 4 million
 func SumEvenFibonacci() int {
 	a := 1
@@ -68,6 +88,13 @@ func SumEvenFibonacci() int {
 }
 
 func main() {
+	Slices()
+
+	// An array var denotes the entire array,
+	// it is not a pointer to the first array elem.
+	a := [...]string{"english", "spanish", "french"}
+	fmt.Println(len(a), cap(a))
+
 	fmt.Println(Hello("world", "english"))
 	fmt.Println(Mul(5, 6.2), Mul(2, 3.3))
 	fmt.Println(Repeat("p", 0) == "")

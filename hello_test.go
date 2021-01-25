@@ -47,3 +47,39 @@ func TestHelloAgain(t *testing.T) {
 		t.Errorf("got %q but wanted %q", got, want)
 	}
 }
+
+func TestPerimeter(t *testing.T) {
+	rectangle := Rectangle{10.0, 12.0}
+	got := Perimeter(rectangle)
+	expected := 44.0
+
+	if got != expected {
+		t.Errorf("got %.3f, expected %.3f", got, expected)
+	}
+}
+
+func TestArea(t *testing.T) {
+	checkArea := func(t testing.TB, shape Shape, expected float64) {
+		t.Helper()
+		got := shape.area()
+
+		if got != expected {
+			t.Errorf("got %g, expected %g", got, expected)
+		}
+	}
+	t.Run("rectangles", func(t *testing.T) {
+		rectangle := Rectangle{10.0, 12.0}
+		checkArea(t, rectangle, 120.0)
+	})
+
+	t.Run("circles", func(t *testing.T) {
+		circle := Circle{10.0}
+		checkArea(t, circle, 314.1592653589793)
+	})
+
+	// t.Run("strings", func(t *testing.T) {
+	// 	checkArea(t, "string", 314.1592653589793)
+
+	// Won't compile coz string doesn't implement Shape!
+	// })
+}

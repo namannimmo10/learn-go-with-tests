@@ -4,6 +4,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"strings"
 )
 
@@ -13,6 +14,29 @@ const french = "french"
 const englishHelloPrefix = "Hello, "
 const spanishHelloPrefix = "Hola, "
 const frenchHelloPrefix = "Bonjour, "
+
+type Rectangle struct {
+	width  float64
+	height float64
+}
+
+func (r Rectangle) area() float64 {
+	return r.height * r.width
+}
+
+type Circle struct {
+	radius float64
+}
+
+func (c Circle) area() float64 {
+	return math.Pi * c.radius * c.radius
+}
+
+type Shape interface {
+	// Interfaces allow us to make functions that can
+	// be used with different types.
+	area() float64
+}
 
 // Public function; so starts with an upper case.
 func Hello(name string, lang string) string {
@@ -38,6 +62,14 @@ func Hello(name string, lang string) string {
 
 func Mul(x int, y float64) float64 {
 	return float64(x) * y
+}
+
+func Perimeter(rectangle Rectangle) float64 {
+	return 2 * (rectangle.width + rectangle.height)
+}
+
+func Area(rectangle Rectangle) float64 {
+	return rectangle.height * rectangle.width
 }
 
 func Repeat(char string, repeatCount int) string {
@@ -87,6 +119,26 @@ func SumEvenFibonacci() int {
 	return sum
 }
 
+func LargestPrimeFactor(num int) int {
+	j := 2
+
+	for (num % j) != 0 {
+		j += 1
+	}
+
+	if (num % 2) == 0 {
+		if num == 2 {
+			return 2
+		} else {
+			return LargestPrimeFactor(num / 2)
+		}
+	} else if num/j == 1 {
+		return num
+	} else {
+		return LargestPrimeFactor(num / j)
+	}
+}
+
 func main() {
 	Slices()
 
@@ -100,4 +152,6 @@ func main() {
 	fmt.Println(Repeat("p", 0) == "")
 	fmt.Println(strings.Contains("substr", "Str"))
 	fmt.Println(SumEvenFibonacci())
+	fmt.Println(LargestPrimeFactor(13195))        // 29
+	fmt.Println(LargestPrimeFactor(600851475143)) // 6857
 }

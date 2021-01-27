@@ -32,6 +32,15 @@ func (c Circle) area() float64 {
 	return math.Pi * c.radius * c.radius
 }
 
+type Triangle struct {
+	Base   float64
+	Height float64
+}
+
+func (t Triangle) area() float64 {
+	return 0.5 * t.Base * t.Height
+}
+
 type Shape interface {
 	// Interfaces allow us to make functions that can
 	// be used with different types.
@@ -102,21 +111,53 @@ func Slices() {
 
 // Prints the sum of even-valued fibonacci terms under 4 million
 func SumEvenFibonacci() int {
-	a := 1
-	b := 2
-	sum := 2
+	a, b, sum := 1, 2, 2
 	next := a + b
 
 	for next < MAX {
 		if (next & 1) == 0 {
 			sum += next
 		}
-		a = b
-		b = next
+		a, b = b, next
 		next = a + b
 	}
 
 	return sum
+}
+
+func IsPalindrome(num int) bool {
+	reversed, originalNum := 0, num
+
+	for num > 0 {
+		reversed = reversed*10 + num%10
+		num /= 10
+	}
+
+	if originalNum == reversed {
+		return true
+	} else {
+		return false
+	}
+}
+
+func LargestPalindrome() int {
+	result, a := 0, 999
+
+	for a >= 100 {
+		b := 999
+		for b >= a {
+			prod := a * b
+			if IsPalindrome(prod) {
+				if prod > result {
+					result = prod
+				}
+			}
+			b--
+		}
+		a--
+	}
+
+	return result
 }
 
 func LargestPrimeFactor(num int) int {
@@ -140,6 +181,10 @@ func LargestPrimeFactor(num int) int {
 }
 
 func main() {
+	// map ternary!
+	c := map[bool]int{true: 1, false: 0}[5 < 4]
+	fmt.Println(c)
+
 	Slices()
 
 	// An array var denotes the entire array,
@@ -154,4 +199,5 @@ func main() {
 	fmt.Println(SumEvenFibonacci())
 	fmt.Println(LargestPrimeFactor(13195))        // 29
 	fmt.Println(LargestPrimeFactor(600851475143)) // 6857
+	fmt.Println(LargestPalindrome())              // 906609
 }

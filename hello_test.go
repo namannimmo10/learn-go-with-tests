@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestHello(t *testing.T) {
 
@@ -59,27 +62,36 @@ func TestPerimeter(t *testing.T) {
 }
 
 func TestArea(t *testing.T) {
-	checkArea := func(t testing.TB, shape Shape, expected float64) {
-		t.Helper()
-		got := shape.area()
-
-		if got != expected {
-			t.Errorf("got %g, expected %g", got, expected)
-		}
+	// Table-based tests are a great fit if we wish to test
+	// various implementations of an interface, or if the data
+	// passed in to a func has lots of different requirements.
+	areaTests := []struct {
+		name  string
+		shape Shape
+		Area  float64
+	}{
+		{name: "Rectangle", shape: Rectangle{12, 6}, Area: 72.0},
+		{name: "Circle", shape: Circle{10}, Area: 314.1592653589793},
+		{name: "Triangle", shape: Triangle{12, 6}, Area: 36.0},
 	}
-	t.Run("rectangles", func(t *testing.T) {
-		rectangle := Rectangle{10.0, 12.0}
-		checkArea(t, rectangle, 120.0)
-	})
 
-	t.Run("circles", func(t *testing.T) {
-		circle := Circle{10.0}
-		checkArea(t, circle, 314.1592653589793)
-	})
+	for _, tt := range areaTests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := tt.shape.area()
+			if got != tt.Area {
+				t.Errorf("%#v: got %g, expected %g", tt.name, got, tt.Area)
+			}
+		})
+	}
+}
 
-	// t.Run("strings", func(t *testing.T) {
-	// 	checkArea(t, "string", 314.1592653589793)
+func TestIsPalindrome(t *testing.T) {
+	if !IsPalindrome(56765) {
+		t.Errorf("The number passed in is a palindrome.")
+	}
+}
 
-	// Won't compile coz string doesn't implement Shape!
-	// })
+func ExampleIsPalindrome() {
+	fmt.Println(IsPalindrome(56765))
+	// Output: true
 }

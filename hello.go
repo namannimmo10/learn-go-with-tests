@@ -8,12 +8,14 @@ import (
 	"strings"
 )
 
-const MAX = 4000000
-const spanish = "spanish"
-const french = "french"
-const englishHelloPrefix = "Hello, "
-const spanishHelloPrefix = "Hola, "
-const frenchHelloPrefix = "Bonjour, "
+const (
+	MAX                = 4000000
+	spanish            = "spanish"
+	french             = "french"
+	englishHelloPrefix = "Hello, "
+	spanishHelloPrefix = "Hola, "
+	frenchHelloPrefix  = "Bonjour, "
+)
 
 type Rectangle struct {
 	width  float64

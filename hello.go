@@ -4,7 +4,10 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"math"
+	"net/http"
+	"os"
 	"strings"
 )
 
@@ -69,6 +72,18 @@ func Hello(name string, lang string) string {
 	}
 
 	return mainPrefix + name
+}
+
+func Greet(writer io.Writer, name string) {
+	fmt.Fprintf(writer, "Hello, %s", name)
+	// `fmt.Fprintf` is just like `fmt.Printf`;
+	// But takes a Writer to send the string to,
+	// whereas `fmt.Printf` defaults to stdout.
+}
+
+// MyGreeterHandler says "Hello, world" over HTTP.
+func MyGreeterHandler(w http.ResponseWriter, r *http.Request) {
+	Greet(w, "world")
 }
 
 func Mul(x int, y float64) float64 {
@@ -202,4 +217,10 @@ func main() {
 	fmt.Println(LargestPrimeFactor(13195))        // 29
 	fmt.Println(LargestPrimeFactor(600851475143)) // 6857
 	fmt.Println(LargestPalindrome())              // 906609
+	Greet(os.Stdout, "Nimo")
+
+	// err := http.ListenAndServe(":5000", http.HandleFunc(MyGreeterHandler))
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
 }

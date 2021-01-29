@@ -9,10 +9,13 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
 const (
+	countdownStart     = 3
 	MAX                = 4000000
+	finalWord          = "Go!"
 	spanish            = "spanish"
 	french             = "french"
 	englishHelloPrefix = "Hello, "
@@ -83,7 +86,7 @@ func Greet(writer io.Writer, name string) {
 
 // MyGreeterHandler says "Hello, world" over HTTP.
 func MyGreeterHandler(w http.ResponseWriter, r *http.Request) {
-	Greet(w, "world")
+	Greet(w, "world") // `http.ResponseWriter` also implements `io.Writer`.
 }
 
 func Mul(x int, y float64) float64 {
@@ -104,6 +107,15 @@ func Repeat(char string, repeatCount int) string {
 		repeatedString += char
 	}
 	return repeatedString
+}
+
+func Countdown(out io.Writer) {
+	for i := countdownStart; i > 0; i-- {
+		time.Sleep(1 * time.Second)
+		fmt.Fprintln(out, i)
+	}
+	time.Sleep(1 * time.Second)
+	fmt.Fprint(out, finalWord)
 }
 
 func Slices() {
@@ -198,6 +210,9 @@ func LargestPrimeFactor(num int) int {
 }
 
 func main() {
+	Countdown(os.Stdout)
+	fmt.Println()
+
 	// map ternary!
 	c := map[bool]int{true: 1, false: 0}[5 < 4]
 	fmt.Println(c)
@@ -217,7 +232,7 @@ func main() {
 	fmt.Println(LargestPrimeFactor(13195))        // 29
 	fmt.Println(LargestPrimeFactor(600851475143)) // 6857
 	fmt.Println(LargestPalindrome())              // 906609
-	Greet(os.Stdout, "Nimo")
+	Greet(os.Stdout, "Nimo\n")
 
 	// err := http.ListenAndServe(":5000", http.HandleFunc(MyGreeterHandler))
 	// if err != nil {

@@ -85,6 +85,15 @@ func TestArea(t *testing.T) {
 	}
 }
 
+func TestSwapCase(t *testing.T) {
+	got := SwapCase('g')  // returns the ~rune~.
+	expected := int32(71) // ~rune~ literals are 32-bit integer values.
+
+	if got != expected {
+		t.Errorf("got %q, expected %q", got, expected)
+	}
+}
+
 func TestIsPalindrome(t *testing.T) {
 	if !IsPalindrome(56765) {
 		t.Errorf("The number passed in is a palindrome.")

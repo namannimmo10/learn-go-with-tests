@@ -209,6 +209,17 @@ func LargestPrimeFactor(num int) int {
 	}
 }
 
+func SwapCase(r rune) rune {
+	switch {
+	case r >= 97 && r <= 122:
+		return r - 32
+	case r >= 65 && r <= 90:
+		return r + 32
+	default:
+		return r
+	}
+}
+
 func main() {
 	Countdown(os.Stdout)
 	fmt.Println()
@@ -224,6 +235,11 @@ func main() {
 	a := [...]string{"english", "spanish", "french"}
 	fmt.Println(len(a), cap(a))
 
+	for val := range a {
+		fmt.Printf("%d\n", val)
+	}
+
+	fmt.Println(rune('g'), rune('o'), rune('G'))
 	fmt.Println(Hello("world", "english"))
 	fmt.Println(Mul(5, 6.2), Mul(2, 3.3))
 	fmt.Println(Repeat("p", 0) == "")
@@ -238,4 +254,13 @@ func main() {
 	// if err != nil {
 	// 	fmt.Println(err)
 	// }
+
+	kvp := map[string]string{"a": "val1", "b": "val2"}
+	for key, val := range kvp {
+		fmt.Printf("%s -> %s\n", key, val)
+	}
+
+	for key := range kvp {
+		fmt.Printf("%s\n", key)
+	}
 }

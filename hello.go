@@ -55,6 +55,11 @@ type Shape interface {
 	area() float64
 }
 
+type result struct {
+	string
+	bool
+}
+
 // Public function; so starts with an upper case.
 func Hello(name string, lang string) string {
 	if name == "" {
@@ -218,6 +223,33 @@ func SwapCase(r rune) rune {
 	default:
 		return r
 	}
+}
+
+type WebsiteChecker func(string) bool
+
+func slowWebsiteChecker(_ string) bool {
+	time.Sleep(20 * time.Millisecond)
+	return true
+}
+
+// `CheckWebsites` takes a `WebsiteChecker` and a slice of urls and returns
+// a map of urls to the result of checking each url with `WebsiteChecker`.
+func CheckWebsites(wc WebsiteChecker, urls []string) map[string]bool {
+	results := make(map[string]bool)
+	resultChannel := make(chan result)
+
+	for _, url := range urls {
+		go func(u string) {
+			resultChannel <- result{u, wc(u)}
+		}(url)
+	}
+
+	for i := 0; i < len(urls); i++ {
+		r := <-resultChannel
+		results[r.string] = r.bool
+	}
+
+	return results
 }
 
 func main() {

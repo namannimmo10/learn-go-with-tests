@@ -5,6 +5,8 @@ package main
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
+	"log"
 	"math"
 	"net/http"
 	"os"
@@ -295,4 +297,16 @@ func main() {
 	for key := range kvp {
 		fmt.Printf("%s\n", key)
 	}
+
+	resp, err := http.Get("https://namannimmo10.github.io/emerald//week_12")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	body, err_ := ioutil.ReadAll(resp.Body)
+	if err_ != nil {
+		log.Fatalln(err_)
+	}
+
+	fmt.Println(string(body))
 }

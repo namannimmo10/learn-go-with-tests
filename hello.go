@@ -254,6 +254,34 @@ func CheckWebsites(wc WebsiteChecker, urls []string) map[string]bool {
 	return results
 }
 
+// Creates a new file using `os.File`.
+func createFile(p string) *os.File {
+	fmt.Println("Creating a file")
+	f, err := os.Create(p)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return f
+}
+
+// Writes to a new file using `Fprintln`.
+func writeFile(f *os.File) {
+	fmt.Println("Writing to the file.")
+	fmt.Fprintln(f, "this is a new file!")
+}
+
+func closeFile(f *os.File) {
+	fmt.Println("Closing the file")
+	err := f.Close()
+
+	if err != nil {
+		fmt.Println("Some issue with closing the file.")
+		os.Exit(1)
+	}
+}
+
 func main() {
 	Countdown(os.Stdout)
 	fmt.Println()
@@ -309,4 +337,12 @@ func main() {
 	}
 
 	fmt.Println(string(body))
+
+	// create a file using `os.Create` and writing to it.
+	f := createFile("/home/namannimmo/Desktop/new_file.txt")
+	defer closeFile(f)
+	writeFile(f)
+
+	fmt.Println("random string.")
+
 }

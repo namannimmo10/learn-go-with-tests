@@ -25,6 +25,8 @@ const (
 	frenchHelloPrefix  = "Bonjour, "
 )
 
+var z complex128 = 5 + 6i
+
 type Rectangle struct {
 	width  float64
 	height float64
@@ -65,6 +67,18 @@ type result struct {
 type RomanNumeral struct {
 	Value  int
 	Symbol string
+}
+
+type Human struct {
+	name  string
+	age   int
+	phone string
+}
+
+type Employee struct {
+	Human      // embedded field
+	speciality string
+	phone      string
 }
 
 // Public function; so starts with an upper case.
@@ -338,6 +352,16 @@ func main() {
 		fmt.Printf("%d\n", val)
 	}
 
+	k := 1
+	doubleArray := [3][2]int{{1, 2}, {0, 1}, {0, 0}}
+
+Here:
+	k++
+	fmt.Println(k)
+	if k != 5 {
+		goto Here
+	}
+
 	fmt.Println(rune('g'), rune('o'), rune('G'))
 	fmt.Println(Hello("world", "english"))
 	fmt.Println(Mul(5, 6.2), Mul(2, 3.3))
@@ -347,12 +371,18 @@ func main() {
 	fmt.Println(LargestPrimeFactor(13195))        // 29
 	fmt.Println(LargestPrimeFactor(600851475143)) // 6857
 	fmt.Println(LargestPalindrome())              // 906609
+	fmt.Printf("value of the complex no. is: %v\n", z)
+	fmt.Println(doubleArray)
 	Greet(os.Stdout, "Nimo\n")
 
 	// err := http.ListenAndServe(":5000", http.HandleFunc(MyGreeterHandler))
 	// if err != nil {
 	// 	fmt.Println(err)
 	// }
+
+	Bob := Employee{Human{"Bob", 34, "777-444-XXXX"}, "Designer", "333-222"}
+	fmt.Println("Bob's phone no. is:", Bob.phone) // field overloading
+	fmt.Println("Bob's personal phone no. is", Bob.Human.phone)
 
 	kvp := map[string]string{"a": "val1", "b": "val2"}
 	for key, val := range kvp {

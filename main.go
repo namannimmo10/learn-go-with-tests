@@ -10,6 +10,7 @@ import (
 	"math"
 	"net/http"
 	"os"
+	"runtime"
 	"strings"
 	"time"
 )
@@ -246,6 +247,13 @@ func SwapCase(r rune) rune {
 	}
 }
 
+func Say(s string) {
+	for i := 0; i < 5; i++ {
+		runtime.Gosched()
+		fmt.Println(s)
+	}
+}
+
 var allRomanNumerals = []RomanNumeral{
 	{1000, "M"},
 	{900, "CM"},
@@ -333,6 +341,14 @@ func closeFile(f *os.File) {
 	}
 }
 
+func Sums(a []int, c chan int) {
+	total := 0
+	for _, v := range a {
+		total += v
+	}
+	c <- total // sending total to the channel 'c'
+}
+
 func main() {
 	Countdown(os.Stdout)
 	fmt.Println()
@@ -411,5 +427,34 @@ Here:
 	writeFile(f)
 
 	fmt.Println("random string.")
+
+	// Concurrency is a way to structure a program by *breaking* it
+	// into pieces that can be executed independently.
+
+	// goroutines are not threads.
+	// When a goroutine blocks, that thread blocks but no other goroutine blocks.
+	go Say("hello")
+	Say("world")
+
+	// channels
+	ar := []int{7, 2, 8, -9, 4, 0}
+	ch := make(chan int)
+
+	go Sums(ar[:len(ar)/2], ch)
+	go Sums(ar[len(ar)/2:], ch)
+	fmt.Println(runtime.NumGoroutine())
+
+	x, y := <-ch, <-ch
+	fmt.Println(x, y, x+y)
+
+	// Buffered channel
+	ch2 := make(chan string, 3)
+	ch2 <- "go"
+	ch2 <- "golang"
+	ch2 <- "Go"
+	fmt.Println(<-ch2)
+	fmt.Println(<-ch2)
+	fmt.Println(<-ch2, cap(ch2))
+	fmt.Println(runtime.NumGoroutine())
 
 }
